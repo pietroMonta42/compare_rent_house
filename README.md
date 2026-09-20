@@ -64,3 +64,17 @@ La cartella da pubblicare è `dist/`. Non serve un backend per il test: appartam
 Il pulsante `Stampa/PDF` usa `window.print()` e produce una versione stampabile senza header e azioni.
 
 Per un MVP multiutente serviranno in seguito autenticazione, database server e un proxy backend per le chiamate AI.
+
+## GitHub Pages
+
+Il repository include `.github/workflows/deploy-pages.yml`. Dopo il push, abilita il deploy da GitHub Pages:
+
+1. Apri `Settings` → `Pages` nel repository GitHub.
+2. In `Build and deployment`, seleziona `Source: GitHub Actions`.
+3. Attendi il completamento del workflow `Deploy to GitHub Pages` nella tab `Actions`.
+
+L'app sarà pubblicata a:
+
+```text
+https://pietroMonta42.github.io/compare_rent_house/
+```
