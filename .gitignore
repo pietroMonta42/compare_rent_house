@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Vite/build output
+dist/
+
+# TypeScript incremental build data
+*.tsbuildinfo
+
+# Local browser/MCP artifacts
+.playwright-mcp/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+service-account*.json
+
+# Personal source notes and pasted apartment data
+Prompt
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/
