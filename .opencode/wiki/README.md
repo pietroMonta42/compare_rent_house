@@ -8,7 +8,7 @@ tier: core
 
 [← Index](./index.md)
 
-This wiki helps agents navigate the Milano Rent & Energy Radar repository without rereading the whole codebase.
+This wiki helps agents navigate the Rent House Radar repository without rereading the whole codebase.
 
 ## How to use
 

@@ -2,7 +2,7 @@
 okf_version: "0.1"
 ---
 
-# Milano Rent & Energy Radar - Agent Wiki Index
+# Rent House Radar - Agent Wiki Index
 
 Compact navigation map for agents working on the React/Vite apartment comparison app.
 

@@ -4,7 +4,7 @@ description: Use the Playwright MCP browser to inspect and manage apartments in 
 compatibility: opencode
 metadata:
   scope: project
-  app: milano-rent-compare
+  app: rent-house-radar
   storage: localStorage
 ---
 

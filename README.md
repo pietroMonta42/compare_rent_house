@@ -1,4 +1,4 @@
-# Milano Rent & Energy Radar v2
+# Rent House Radar
 
 Confronto dinamico tra affitti a Milano con stima automatica del costo energetico reale (riscaldamento + climatizzazione estiva) e delle utenze non incluse.
 

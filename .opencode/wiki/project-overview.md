@@ -10,7 +10,7 @@ resource: src/App.tsx
 
 [← Index](./index.md)
 
-Milano Rent & Energy Radar is a client-only React 19 + TypeScript + Vite app for comparing rental apartments. It calculates monthly and annual real cost from rent, condominium fees, tenant-paid climate costs, excluded utilities, recurring household costs, contract-entry costs, and configurable energy multipliers. Data and configuration persist in browser `localStorage`; there is no backend.
+Rent House Radar is a client-only React 19 + TypeScript + Vite app for comparing rental apartments. It calculates monthly and annual real cost from rent, condominium fees, tenant-paid climate costs, excluded utilities, recurring household costs, contract-entry costs, and configurable energy multipliers. Data and configuration persist in browser `localStorage`; there is no backend.
 
 Apartment records may also retain the original listing URL (`listingUrl`), which is normalized and rendered as an external link in the card and table views. Recurring mobility and user-added costs are included in cashflow but excluded from the housing €/m² denominator.
 

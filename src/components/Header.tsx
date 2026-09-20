@@ -51,7 +51,7 @@ export function Header({
               </svg>
             </div>
             <div>
-              <h1 className="text-base md:text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight truncate">Milano Rent &amp; Energy Radar</h1>
+              <h1 className="text-base md:text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight truncate">Rent House Radar</h1>
               <p className="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">Confronto costi reali totali &bull; modello energetico configurabile</p>
             </div>
           </div>
