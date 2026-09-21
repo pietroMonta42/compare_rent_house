@@ -22,6 +22,13 @@ export const DEFAULT_SETTINGS: TariffSettings = {
   smallMaintenanceYear: 200,
   voltureDefault: 80,
   registroTenantRate: 0.01,
+  occupants: 1,
+  electricPower: '3',
+  cookingGasYearPerPerson: 45,
+  cookingInductionYearPerPerson: 210,
+  gasMeterFixedYear: 120,
+  electricPower45ExtraYear: 27,
+  additionalCosts: [],
 };
 
 export const SETTINGS_KEY = 'milano_rent_settings_v2';
@@ -35,6 +42,7 @@ export function mergeSettings(partial: Partial<TariffSettings>): TariffSettings 
     orientationMultiplier: { ...DEFAULT_SETTINGS.orientationMultiplier, ...partial.orientationMultiplier },
     heatingMultiplier: { ...DEFAULT_SETTINGS.heatingMultiplier, ...partial.heatingMultiplier },
     acCost: { ...DEFAULT_SETTINGS.acCost, ...partial.acCost },
+    additionalCosts: partial.additionalCosts ?? DEFAULT_SETTINGS.additionalCosts,
   };
 }
 

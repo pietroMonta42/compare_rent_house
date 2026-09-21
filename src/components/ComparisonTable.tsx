@@ -26,7 +26,7 @@ export function ComparisonTable({
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
               <th className="p-3.5 sticky left-0 bg-slate-50 z-10">Immobile</th>
               <th className="p-3.5">m² / Piano</th>
-              <th className="p-3.5">APE &amp; Impianto</th>
+               <th className="p-3.5">APE, impianto &amp; cucina</th>
               <th className="p-3.5">Canone</th>
               <th className="p-3.5">Spese cond.</th>
               <th className="p-3.5 bg-amber-50/60 text-amber-900">Clima/anno</th>
@@ -57,7 +57,8 @@ export function ComparisonTable({
                 </td>
                 <td className="p-3.5">
                   <span className={`inline-flex px-2 py-0.5 rounded-full text-[11px] font-semibold ${energyBadgeClass(apt.energyClass)}`}>{apt.energyClass}</span>
-                  <div className="text-[11px] text-slate-500 mt-1 capitalize">{apt.heatingType.replace('_', ' ')}</div>
+                   <div className="text-[11px] text-slate-500 mt-1 capitalize">{apt.heatingType.replace('_', ' ')}</div>
+                   <div className="text-[11px] text-orange-700 mt-1">Cucina: {apt.kitchenType === 'induction' ? 'induzione' : 'gas'} · {formatEur(m.cookingMonthly, 2)}/m</div>
                 </td>
                 <td className="p-3.5 font-bold text-slate-900">{formatEur(m.rent, 2)}/m</td>
                 <td className="p-3.5 text-slate-700">
@@ -73,8 +74,9 @@ export function ComparisonTable({
                 <td className="p-3.5 bg-brand-50/40 text-brand-900 font-bold">{formatEur(m.totalAnnualCost)}</td>
                 <td className="p-3.5 bg-emerald-50 text-emerald-900 font-bold">{m.totalCostPerSqmYear.toFixed(2).replace('.', ',')} €</td>
                 <td className="p-3.5 text-slate-600">
-                  {formatEur(m.entryTotal)}
-                  <span className="block text-[10px] text-slate-400">{apt.cautionMonths} mesi cauz. + agenzia {formatEur(m.agencyFee)} + extra</span>
+                   {formatEur(m.entryTotal)}
+                   <span className="block text-[10px] text-slate-400">Agenzia {formatEur(m.agencyFee)} ({formatEur(m.agencyMonthlyEquivalent, 2)}/m) + extra</span>
+                   <span className="block text-[10px] text-violet-700">Cauzione separata: {formatEur(m.cautionAmount)}</span>
                 </td>
                 <td className="p-3.5 text-center print:hidden">
                   <button onClick={() => onEdit(apt)} className="p-1.5 text-slate-400 hover:text-brand-600 rounded" title="Modifica">✎</button>

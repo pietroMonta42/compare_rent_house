@@ -5,13 +5,14 @@ const input = 'w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus
 
 export const AI_APARTMENT_PROMPT = `Agisci come un estrattore di dati immobiliari. Analizza la descrizione dell'annuncio che ti fornirò e restituisci SOLO un JSON valido, senza markdown e senza commenti.
 
-Non inventare informazioni. Se un dato non è presente, usa null per i numeri/anno e una stringa vuota per i testi. Usa esclusivamente questi valori enumerati:
+Non inventare informazioni. Se un dato non è presente, usa null per i numeri/anno e una stringa vuota per i testi. Per listingUrl copia l'URL completo dell'annuncio, includendo https://; non usare URL abbreviati o markdown. Usa esclusivamente questi valori enumerati:
 - energyClass: "A", "B-C", "D", "E", "F-G"
 - floorType: "intermediate", "ground", "top"
 - orientation: "south", "east_mixed", "west", "north"
 - heatingType: "gas_central", "gas_autonomous", "heat_pump", "electric_joule"
 - acType: "split_inverter", "portable", "none"
-- contract: "transitorio", "4_4", "libero"
+- contract: "transitorio", "3_2", "4_4"
+- kitchenType: "gas", "induction"
 
 Restituisci esattamente questa struttura. I valori monetari sono mensili se non indicato diversamente:
 {
@@ -32,6 +33,7 @@ Restituisci esattamente questa struttura. I valori monetari sono mensili se non 
   "heatingType": "gas_central",
   "acType": "none",
   "contract": "4_4",
+  "kitchenType": "gas",
   "cautionMonths": 3,
   "upfrontCosts": 0,
   "volture": 80,

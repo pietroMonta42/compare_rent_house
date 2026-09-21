@@ -4,6 +4,9 @@ import { DEFAULT_SETTINGS } from './settings';
 export interface ApartmentMetrics {
   winterThermalCost: number;
   fixedFee: number;
+  cookingAnnual: number;
+  cookingMonthly: number;
+  electricPowerAnnual: number;
   acAnnual: number;
   utilitiesAnnual: number;
   utilitiesBreakdown: Partial<Record<UtilityKey, number>>;
@@ -17,6 +20,9 @@ export interface ApartmentMetrics {
   additionalMonthlyCost: number;
   additionalAnnualCost: number;
   agencyFee: number;
+  agencyMonthlyEquivalent: number;
+  cautionAmount: number;
+  nonRefundableEntryTotal: number;
   totalMonthlyCost: number;
   totalAnnualCost: number;
   totalCostPerSqmYear: number;
@@ -37,6 +43,7 @@ export interface RedFlag {
 
 const CONTRACT_YEARS: Record<Apartment['contract'], number> = {
   transitorio: 1.5,
+  '3_2': 5,
   '4_4': 4,
   libero: 4,
 };
@@ -48,8 +55,9 @@ export function contractYears(c: Apartment['contract']): number {
 export function contractLabel(c: Apartment['contract']): string {
   switch (c) {
     case 'transitorio': return 'Transitorio (~18 mesi)';
+    case '3_2': return '3+2';
     case '4_4': return '4+4';
-    case 'libero': return 'Libero';
+    case 'libero': return '4+4';
   }
 }
 
@@ -73,6 +81,13 @@ export function calculateApartmentMetrics(apt: Apartment, cfg: TariffSettings = 
 
   const winterThermalCost = sqm * baseM2Cost * mFloor * mEsp * mHeat * vectorFactor;
   const fixedFee = apt.heatingType === 'gas_central' ? cfg.fixedCentralFee : 0;
+  const occupants = Math.max(1, cfg.occupants || 1);
+  const kitchenType = apt.kitchenType ?? (apt.features.induction ? 'induction' : 'gas');
+  const cookingAnnual = kitchenType === 'gas'
+    ? cfg.cookingGasYearPerPerson * occupants
+    : cfg.cookingInductionYearPerPerson * occupants * electricityUnitFactor / DEFAULT_SETTINGS.electricityEuroPerKwh;
+  const gasCookingFixedFee = kitchenType === 'gas' && apt.heatingType !== 'gas_autonomous' ? cfg.gasMeterFixedYear : 0;
+  const electricPowerAnnual = kitchenType === 'induction' && cfg.electricPower === '4.5' ? cfg.electricPower45ExtraYear : 0;
 
   let acAnnual = (cfg.acCost[apt.acType] ?? 0) * electricityUnitFactor;
   if (apt.acType === 'split_inverter' && (apt.floorType === 'top' || apt.orientation === 'west')) {
@@ -88,7 +103,7 @@ export function calculateApartmentMetrics(apt: Apartment, cfg: TariffSettings = 
   if (household.rai) utilitiesBreakdown.rai = cfg.raiYear;
   if (household.maintenance) utilitiesBreakdown.maintenance = cfg.maintenanceYear;
   if (household.smallMaintenance) utilitiesBreakdown.small_maintenance = cfg.smallMaintenanceYear;
-  if (!cedolare && apt.contract !== 'libero') {
+  if (!cedolare) {
     utilitiesBreakdown.registro = rent * 12 * cfg.registroTenantRate;
   }
   const utilitiesAnnual = Object.values(utilitiesBreakdown).reduce<number>((s, v) => s + (v ?? 0), 0);
@@ -96,7 +111,12 @@ export function calculateApartmentMetrics(apt: Apartment, cfg: TariffSettings = 
     (sum, cost) => sum + (cost.period === 'annual' ? cost.amount : cost.amount * 12),
     apt.mobility?.enabled ? apt.mobility.monthlyCost * 12 : 0,
   );
-  const additionalMonthlyCost = additionalAnnualCost / 12;
+  const globalAdditionalAnnualCost = (cfg.additionalCosts ?? []).reduce(
+    (sum, cost) => sum + (cost.period === 'annual' ? cost.amount : cost.amount * 12),
+    0,
+  );
+  const additionalAnnualTotal = additionalAnnualCost + globalAdditionalAnnualCost;
+  const additionalMonthlyCost = additionalAnnualTotal / 12;
 
   let agencyFee = 0;
   const agency = apt.agencyFee;
@@ -113,11 +133,18 @@ export function calculateApartmentMetrics(apt: Apartment, cfg: TariffSettings = 
   const extraUtilitiesMonthly = utilitiesAnnual / 12;
   // NOTE: condo for all-inclusive formulas already contains utilities → nothing extra
   // Entry costs are deliberately excluded: they are one-off and only affect fiveYearTotal.
-  const totalMonthlyCost = rent + condo + extraUtilitiesMonthly + tenantMonthlyClimateCost + additionalMonthlyCost;
+  const cookingMonthly = kitchenType === 'gas' && !apt.included.gas
+    ? (cookingAnnual + gasCookingFixedFee) / 12
+    : kitchenType === 'induction' && !apt.included.electricity
+      ? (cookingAnnual + electricPowerAnnual) / 12
+      : 0;
+  const totalMonthlyCost = rent + condo + extraUtilitiesMonthly + tenantMonthlyClimateCost + cookingMonthly + additionalMonthlyCost;
   const totalAnnualCost = totalMonthlyCost * 12;
 
   const cYears = contractYears(apt.contract);
-  const entryTotal = apt.upfrontCosts + apt.cautionMonths * rent + (volture > 0 ? volture : 0) + agencyFee;
+  const cautionAmount = apt.cautionMonths * rent;
+  const nonRefundableEntryTotal = apt.upfrontCosts + (volture > 0 ? volture : 0) + agencyFee;
+  const entryTotal = nonRefundableEntryTotal;
   const upfrontPerYear = entryTotal > 0 ? { value: entryTotal / cYears, contractYears: cYears } : null;
 
   const fiveYearTotal = totalAnnualCost * 5 + (entryTotal > 0 ? entryTotal * Math.ceil(5 / cYears) : 0);
@@ -127,6 +154,9 @@ export function calculateApartmentMetrics(apt: Apartment, cfg: TariffSettings = 
   return {
     winterThermalCost,
     fixedFee,
+    cookingAnnual,
+    cookingMonthly,
+    electricPowerAnnual,
     acAnnual,
     utilitiesAnnual,
     utilitiesBreakdown,
@@ -138,8 +168,11 @@ export function calculateApartmentMetrics(apt: Apartment, cfg: TariffSettings = 
     condo,
     extraUtilitiesMonthly,
     additionalMonthlyCost,
-    additionalAnnualCost,
+    additionalAnnualCost: additionalAnnualTotal,
     agencyFee,
+    agencyMonthlyEquivalent: agencyFee / (cYears * 12),
+    cautionAmount,
+    nonRefundableEntryTotal,
     totalMonthlyCost,
     totalAnnualCost,
     // Mobility, garage and other user-added extras are cashflow costs, not housing-area costs.

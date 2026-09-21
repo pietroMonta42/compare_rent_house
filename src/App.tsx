@@ -203,11 +203,11 @@ export default function App() {
           </button>
           {energyOpen && <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Gas {settings.gasEuroPerSmc.toFixed(2).replace('.', ',')} €/Smc &bull; Elettricità{' '}
-            {settings.electricityEuroPerKwh.toFixed(2).replace('.', ',')} €/kWh &bull; Quote fisse centralizzato{' '}
-            {formatEur(settings.fixedCentralFee)}/anno &bull; APE base A {formatEur(settings.baseClassCost.A)}/m² → G{' '}
-            {formatEur(settings.baseClassCost['F-G'])}/m² &bull; Utenze escluse: luce {formatEur(settings.defaultElectricityYear)}/a, acqua{' '}
-             {formatEur(settings.defaultWaterYear)}/a, internet {formatEur(settings.defaultInternetYear)}/a, TARI {formatEur(settings.tariYear)}/a, RAI {formatEur(settings.raiYear)}/a, manutenzione {formatEur(settings.maintenanceYear)}/a
+             Gas {settings.gasEuroPerSmc.toFixed(2).replace('.', ',')} €/Smc &bull; Elettricità{' '}
+             {settings.electricityEuroPerKwh.toFixed(2).replace('.', ',')} €/kWh &bull; Quote fisse centralizzato{' '}
+             {formatEur(settings.fixedCentralFee)}/anno &bull; APE base A {formatEur(settings.baseClassCost.A)}/m² → G{' '}
+             {formatEur(settings.baseClassCost['F-G'])}/m² &bull; Utenze escluse: luce {formatEur(settings.defaultElectricityYear)}/a, acqua{' '}
+             {formatEur(settings.defaultWaterYear)}/a, internet {formatEur(settings.defaultInternetYear)}/a, TARI {formatEur(settings.tariYear)}/a, RAI {formatEur(settings.raiYear)}/a, manutenzione {formatEur(settings.maintenanceYear)}/a &bull; Cucina {settings.occupants} persona/e, contatore {settings.electricPower} kW
           </p>
           <p className="text-[11px] text-slate-400 mt-1 font-mono">
              Totale = canone + spese condominiali + utenze/spese fisse non incluse + costi aggiuntivi + clima a carico / 12. I costi aggiuntivi sono esclusi dal denominatore €/m².

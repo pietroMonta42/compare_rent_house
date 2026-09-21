@@ -27,6 +27,10 @@ export function SettingsPanel({
   const set = <K extends keyof TariffSettings>(k: K, v: TariffSettings[K]) => setS((p) => ({ ...p, [k]: v }));
   const setMul = (group: 'baseClassCost' | 'floorMultiplier' | 'orientationMultiplier' | 'heatingMultiplier' | 'acCost', k: string, v: number) =>
     setS((p) => ({ ...p, [group]: { ...p[group], [k]: v } }));
+  const updateExtra = (id: string, key: 'label' | 'amount' | 'period', value: string | number) =>
+    setS((p) => ({ ...p, additionalCosts: p.additionalCosts.map((c) => c.id === id ? { ...c, [key]: value } : c) }));
+  const addExtra = () => setS((p) => ({ ...p, additionalCosts: [...p.additionalCosts, { id: `global-${Date.now()}`, label: '', amount: 0, period: 'monthly' }] }));
+  const removeExtra = (id: string) => setS((p) => ({ ...p, additionalCosts: p.additionalCosts.filter((c) => c.id !== id) }));
 
   const apply = (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,6 +121,17 @@ export function SettingsPanel({
           </div>
 
           <div className={`${fieldBox} grid grid-cols-2 sm:grid-cols-4 gap-3`}>
+            <div className="col-span-full"><p className="font-bold text-[11px] uppercase tracking-wide text-slate-500">Cucina, inquilini e potenza</p></div>
+            <div><label className={labelEl}>Numero inquilini</label>{numInput(s.occupants, (v) => set('occupants', Math.max(1, v)), 1, 1)}</div>
+            <div><label className={labelEl}>Potenza contatore</label><select className={input} value={s.electricPower} onChange={(e) => set('electricPower', e.target.value as TariffSettings['electricPower'])}><option value="3">3 kW</option><option value="4.5">4,5 kW</option></select></div>
+            <div><label className={labelEl}>Cucina gas (€/persona/anno)</label>{numInput(s.cookingGasYearPerPerson, (v) => set('cookingGasYearPerPerson', v), 5)}</div>
+            <div><label className={labelEl}>Cucina induzione (€/persona/anno)</label>{numInput(s.cookingInductionYearPerPerson, (v) => set('cookingInductionYearPerPerson', v), 5)}</div>
+            <div><label className={labelEl}>Quota fissa gas cucina (€/anno)</label>{numInput(s.gasMeterFixedYear, (v) => set('gasMeterFixedYear', v), 5)}</div>
+            <div><label className={labelEl}>Extra 4,5 kW (€/anno)</label>{numInput(s.electricPower45ExtraYear, (v) => set('electricPower45ExtraYear', v), 1)}</div>
+            <p className="col-span-full text-[10px] text-slate-500">La potenza aggiuntiva incide solo sugli appartamenti con cucina a induzione e contatore configurato a 4,5 kW.</p>
+          </div>
+
+          <div className={`${fieldBox} grid grid-cols-2 sm:grid-cols-4 gap-3`}>
             <div className="col-span-full">
               <p className="font-bold text-[11px] uppercase tracking-wide text-slate-500">Moltiplicatore tipo impianto di riscaldamento</p>
             </div>
@@ -190,6 +205,17 @@ export function SettingsPanel({
               <label className={labelEl}>Registro contratto (% canone annuo, se non cedolare)</label>
               {numInput(s.registroTenantRate * 100, (v) => set('registroTenantRate', v / 100), 0.1, 0)}
             </div>
+          </div>
+
+          <div className={`${fieldBox} space-y-2`}>
+            <div className="flex justify-between items-center"><p className="font-bold text-[11px] uppercase tracking-wide text-slate-500">Spese accessorie globali</p><button type="button" onClick={addExtra} className="px-2 py-1 rounded bg-indigo-100 text-indigo-800 text-[11px] font-bold">+ Aggiungi voce</button></div>
+            {s.additionalCosts.map((cost) => <div key={cost.id} className="grid grid-cols-[1fr_100px_110px_auto] gap-2 items-end">
+              <div><label className={labelEl}>Descrizione</label><input className={input} value={cost.label} onChange={(e) => updateExtra(cost.id, 'label', e.target.value)} placeholder="Luce, gas, palestra..." /></div>
+              <div><label className={labelEl}>Importo (€)</label><input type="number" min={0} className={input} value={cost.amount} onChange={(e) => updateExtra(cost.id, 'amount', +e.target.value || 0)} /></div>
+              <div><label className={labelEl}>Periodicità</label><select className={input} value={cost.period} onChange={(e) => updateExtra(cost.id, 'period', e.target.value)}><option value="monthly">Mensile</option><option value="annual">Annuale</option></select></div>
+              <button type="button" onClick={() => removeExtra(cost.id)} className="px-2 py-2 text-red-600">✕</button>
+            </div>)}
+            <p className="text-[10px] text-slate-500">Queste voci si applicano a tutti gli appartamenti; puoi aggiungere costi diversi anche nel singolo appartamento.</p>
           </div>
         </div>
 

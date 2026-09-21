@@ -39,6 +39,7 @@ export function ApartmentModal({
       heatingType: 'gas_central',
       acType: 'split_inverter',
       contract: '4_4',
+      kitchenType: 'gas',
       cautionMonths: 3,
       upfrontCosts: 0,
       volture: 80,
@@ -128,14 +129,21 @@ export function ApartmentModal({
               <div>
                 <label className={labelEl}>Tipo contratto</label>
                 <select className={input} value={apt.contract} onChange={(e) => set('contract', e.target.value as ContractType)}>
-                  <option value="4_4">4+4</option>
-                  <option value="transitorio">Transitorio (~18 mesi)</option>
-                  <option value="libero">Libero</option>
+                   <option value="4_4">4+4</option>
+                   <option value="3_2">3+2</option>
+                   <option value="transitorio">Transitorio (~18 mesi)</option>
                 </select>
               </div>
               <div>
                 <label className={labelEl}>Cauzione (mesi)</label>
                 <input type="number" min={0} step={1} className={input} value={apt.cautionMonths} onChange={(e) => set('cautionMonths', +e.target.value)} />
+              </div>
+              <div>
+                <label className={labelEl}>Tipo cucina</label>
+                <select className={input} value={apt.kitchenType ?? (apt.features.induction ? 'induction' : 'gas')} onChange={(e) => set('kitchenType', e.target.value as Apartment['kitchenType'])}>
+                  <option value="gas">Gas</option>
+                  <option value="induction">Induzione</option>
+                </select>
               </div>
               <div>
                 <label className={labelEl}>Costo ingresso extra (€)</label>

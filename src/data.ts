@@ -186,7 +186,8 @@ export function normalizeApartment(a: Apartment): Apartment {
     year: a.year ?? null,
     ipe: a.ipe ?? '',
     floorNumber: a.floorNumber ?? '',
-    contract: a.contract ?? '4_4',
+    contract: a.contract === 'libero' ? '4_4' : (a.contract ?? '4_4'),
+    kitchenType: a.kitchenType ?? (a.features?.induction ? 'induction' : 'gas'),
     cautionMonths: a.cautionMonths ?? 3,
     upfrontCosts: a.upfrontCosts ?? 0,
     included: {

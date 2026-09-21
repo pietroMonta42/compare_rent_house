@@ -3,7 +3,9 @@ export type FloorType = 'intermediate' | 'ground' | 'top';
 export type Orientation = 'south' | 'east_mixed' | 'west' | 'north';
 export type HeatingType = 'gas_central' | 'gas_autonomous' | 'heat_pump' | 'electric_joule';
 export type AcType = 'split_inverter' | 'portable' | 'none';
-export type ContractType = 'transitorio' | '4_4' | 'libero';
+export type ContractType = 'transitorio' | '3_2' | '4_4' | 'libero';
+export type KitchenType = 'gas' | 'induction';
+export type ElectricPower = '3' | '4.5';
 export type FurnishingType = 'furnished' | 'partial' | 'empty';
 export type CostPeriod = 'monthly' | 'annual';
 export type AgencyFeeMode = 'none' | 'flat' | 'monthly_multiple' | 'annual_percentage';
@@ -82,6 +84,7 @@ export interface Apartment {
   heatingType: HeatingType;
   acType: AcType;
   contract: ContractType;
+  kitchenType?: KitchenType;
   cautionMonths: number;
   /** One-off entry costs: agency fee, movers, activation... (€) */
   upfrontCosts: number;
@@ -128,4 +131,11 @@ export interface TariffSettings {
   voltureDefault: number;
   /** Tenant share of contract registration per year when NOT cedolare secca (2% / 2 = 1% of annual rent) */
   registroTenantRate: number;
+  occupants: number;
+  electricPower: ElectricPower;
+  cookingGasYearPerPerson: number;
+  cookingInductionYearPerPerson: number;
+  gasMeterFixedYear: number;
+  electricPower45ExtraYear: number;
+  additionalCosts: AdditionalCost[];
 }

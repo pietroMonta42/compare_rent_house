@@ -81,7 +81,8 @@ export function ApartmentCard({
           <div className="flex justify-between"><span className="text-slate-600">Canone:</span><span className="font-bold text-slate-900">{formatEur(m.rent, 2)}/m</span></div>
           <div className="flex justify-between"><span className="text-slate-600">Spese condominiali:</span><span className="font-medium text-slate-700">{formatEur(m.condo, 2)}/m {apt.condoEstimated && <em className="text-amber-600">(stimate)</em>}</span></div>
           <div className="flex justify-between"><span className="text-amber-700">Clima a tuo carico:</span><span className="font-semibold">{m.tenantClimateAnnual === 0 ? <span className="text-emerald-700 font-bold">Incluso</span> : <>{formatEur(m.tenantMonthlyClimateCost, 2)}/m <span className="text-slate-400 text-[10px]">({formatEur(m.tenantClimateAnnual)}/a)</span></>}</span></div>
-          <div className="flex justify-between"><span className="text-sky-700">Utenze + spese fisse:</span><span className="font-semibold">{m.extraUtilitiesMonthly > 0 ? <>{formatEur(m.extraUtilitiesMonthly, 2)}/m <span className="text-slate-400 text-[10px]">({formatEur(m.utilitiesAnnual)}/a)</span></> : 'Incluse'}</span></div>
+           <div className="flex justify-between"><span className="text-sky-700">Utenze + spese fisse:</span><span className="font-semibold">{m.extraUtilitiesMonthly > 0 ? <>{formatEur(m.extraUtilitiesMonthly, 2)}/m <span className="text-slate-400 text-[10px]">({formatEur(m.utilitiesAnnual)}/a)</span></> : 'Incluse'}</span></div>
+           <div className="flex justify-between"><span className="text-orange-700">Cucina ({apt.kitchenType === 'induction' ? 'induzione' : 'gas'}):</span><span className="font-semibold">{formatEur(m.cookingMonthly, 2)}/m</span></div>
           {m.additionalMonthlyCost > 0 && <div className="flex justify-between"><span className="text-indigo-700">Costi aggiuntivi:</span><span className="font-semibold">{formatEur(m.additionalMonthlyCost, 2)}/m</span></div>}
           <div className="pt-2 mt-1 border-t border-brand-200/60 flex justify-between items-baseline">
             <div>
@@ -99,15 +100,15 @@ export function ApartmentCard({
           </div>
         </div>
 
-        {m.entryTotal > 0 && (
-          <div className="p-3 bg-violet-50 rounded-xl border border-violet-200 text-xs">
+        {(m.entryTotal > 0 || m.cautionAmount > 0) && (
+           <div className="p-3 bg-violet-50 rounded-xl border border-violet-200 text-xs">
             <div className="flex justify-between items-baseline gap-3">
               <span className="font-bold uppercase tracking-wide text-violet-900">Spese d'ingresso una tantum</span>
-              <span className="text-base font-black text-violet-800">{formatEur(m.entryTotal)}</span>
+               <span className="text-base font-black text-violet-800">{formatEur(m.entryTotal)}</span>
             </div>
             <p className="mt-1 text-[11px] text-violet-800">
-              Cauzione {formatEur(apt.cautionMonths * m.rent)} + volture/attivazioni {formatEur(apt.volture ?? 0)} + agenzia {formatEur(m.agencyFee)} + altri costi {formatEur(apt.upfrontCosts)}.
-              {' '}Non incluse nelle spese mensili; considerate solo nel totale a 5 anni.
+               Costi non rimborsabili: volture {formatEur(apt.volture ?? 0)} + agenzia {formatEur(m.agencyFee)} ({formatEur(m.agencyMonthlyEquivalent, 2)}/m sul contratto) + altri costi {formatEur(apt.upfrontCosts)}.
+               {' '}La cauzione di {formatEur(m.cautionAmount)} è separata: liquidità immobilizzata e restituita, non un costo.
             </p>
           </div>
         )}
