@@ -37,6 +37,8 @@ No layer pages yet. Add one only after the same area becomes a recurring navigat
 | AI import | `src/components/AIImportPanel.tsx` |
 | Browser MCP | `opencode.json` (`playwright`) |
 | Theme | `src/App.tsx` + `src/index.css`, persisted in `localStorage` |
+| GitHub Pages deploy | `.github/workflows/deploy-pages.yml` |
+| Mobile navigation | `src/components/Header.tsx` bottom view bar + filter drawer |
 
 ## All wiki files
 

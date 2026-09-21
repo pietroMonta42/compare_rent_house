@@ -18,6 +18,8 @@ compare_house/
 ├── vite.config.ts      Vite, React, and Tailwind plugins
 ├── tsconfig.json        TypeScript checks
 ├── README.md            project run and architecture notes
+├── public/               static assets such as the favicon
+├── .github/workflows/    GitHub Pages build and deployment
 ├── opencode.json        OpenCode Playwright MCP configuration
 ├── dist/                generated production output
 └── .opencode/           agent wiki and project-scoped OpenCode skills
@@ -38,6 +40,9 @@ compare_house/
 | `opencode.json` | Local Playwright MCP server configuration |
 | `src/index.css` | Tailwind theme tokens and light/dark contrast overrides |
 | `src/components/CostChart.tsx` | Monthly cashflow composition, including additional costs |
+| `src/components/Header.tsx` | Responsive header, mobile filter drawer, and bottom view navigation |
+| `.github/workflows/deploy-pages.yml` | Builds and deploys `dist/` to GitHub Pages |
+| `public/favicon.svg` | Browser favicon |
 
 ## Related
 

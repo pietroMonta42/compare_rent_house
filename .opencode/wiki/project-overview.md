@@ -18,6 +18,8 @@ The AI import flow is provider-agnostic: the user copies the prompt from `AIImpo
 
 The current deployment target is a static MVP. Apartment data, settings, theme, and initialization state are browser-local; shared users and server-side AI calls are intentionally out of scope until a backend is added.
 
+The responsive shell uses a compact mobile header, a side drawer for secondary filters/actions, and a fixed bottom navigation for cards, table, and chart. Printing uses a dedicated `window.print()` path with print-only visibility rules.
+
 ## Runtime flow
 
 ```text
@@ -44,6 +46,7 @@ src/main.tsx
 | Theme persistence and dark UI overrides | `src/App.tsx`, `src/index.css` |
 | Extra recurring costs, mobility, agency fees | `src/types.ts`, `src/calc.ts`, `src/components/ApartmentModal.tsx` |
 | Print/PDF output | `src/App.tsx`, `src/index.css` |
+| GitHub Pages static deployment | `.github/workflows/deploy-pages.yml`, `vite.config.ts` |
 | Forms and view rendering | `src/components/` |
 
 ## Related

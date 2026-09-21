@@ -20,7 +20,9 @@ tier: core
 | Add/edit apartment input | `ApartmentModal.tsx` |
 | Cards/table/chart output | Matching component in `src/components/` |
 | View sorting/archive behavior | `src/App.tsx` and `Header.tsx` |
+| Mobile header, filters, or view navigation | `src/components/Header.tsx`, then `src/App.tsx` spacing |
 | Import/export or storage behavior | `src/App.tsx` and `src/data.ts` |
+| GitHub Pages/deployment path | `vite.config.ts`, `.github/workflows/deploy-pages.yml` |
 
 ## Rules before editing
 
@@ -28,6 +30,7 @@ tier: core
 - When adding persisted fields, update `normalizeApartment` for old local data.
 - When adding settings, update defaults, deep merge, panel inputs, and export/import.
 - Keep cards, table, and chart derived from the same `sorted` list in `App.tsx`.
+- Keep mobile controls separate from desktop controls; the bottom view bar must remain reachable while scrolling.
 - Run `npx tsc -p tsconfig.json` and `npm run build` after changes.
 
 ## Related
